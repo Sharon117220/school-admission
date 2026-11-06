@@ -20,6 +20,16 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Supabase application access
+
+Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local` for local development and in your deployment environment. These values are used by the browser client; never expose a Supabase service-role key in frontend code.
+
+In the Supabase SQL Editor for the project configured in `.env.local`, run [`supabase/applications-policies.sql`](./supabase/applications-policies.sql). It enables row-level security, creates an application record when a student account is registered, allows students to view only their own applications, and allows `admin@school.com` to view and update applications.
+
+The `public.applications` table must have `student_name`, `parent_name`, `phone`, `email`, `grade`, `user_id`, and `status` columns. The registration trigger validates the submitted details and creates the application as `Pending`, including when email confirmation is enabled.
+
+The SQL script is safe to run again. Applications from accounts created before the trigger was installed are not generated retroactively.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
